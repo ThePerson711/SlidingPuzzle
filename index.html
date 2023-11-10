@@ -1,0 +1,251 @@
+<html>
+    <head>
+        <style>
+            [data-theme="light"] {
+                --body-bg-color: rgba(220, 220, 220, 0.75);
+                --body-text-color: rgba(0, 0, 0, 1);
+                --main-text-color: rgb(32, 248, 255);
+                --main-blocks-color: rgb(255, 100, 22);
+                --main-block-panel-color: rgb(255, 183, 157);
+                --main-blocks-border-color: gray;
+                --main-border-color: gray;
+            }
+            [data-theme="dark"] {
+                --body-bg-color: rgba(0, 0, 0, 0.85);
+                --body-text-color: rgb(211, 211, 211);
+                --main-text-color: rgb(141, 237, 240);
+                --main-blocks-color: rgba(81, 44, 25, 0.854);
+                --main-block-panel-color: rgb(107, 71, 58);
+                --main-blocks-border-color: gray;
+                --main-border-color: rgb(255, 250, 250);
+            }
+            body {
+                display: grid;
+                justify-items: center;
+                align-items: center;
+                background-color: var(--body-bg-color);
+                color: var(--body-text-color);
+            }
+            .main {
+                border: 2px solid var(--main-border-color);
+                border-radius: 12px;
+                padding: 3px;
+                background-color: var(--main-block-panel-color);
+                aspect-ratio: 1/1;
+                width: 60%;
+                min-width: 300px;
+                max-width: 780px;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+            }
+            #lines_id {
+                flex: 1;
+                margin: 0;
+                display: flex;
+                flex-direction: rows;
+            }
+            .columns_ {
+                flex: 1;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .columns_ button {
+                width: 96%;
+                height: 96%;
+                border: 2px solid var(--main-blocks-border-color);
+                border-radius: 12px;
+                background-color: var(--main-blocks-color);
+                font-size: 42px;
+                font-weight: bold;
+                color: var(--main-text-color);
+            }
+        </style>
+    </head>
+    <body>
+        <!--  -->
+        <div class="main">
+            </div>
+        <div class="my_panel">
+            </div>
+        <!--  -->
+        <script>
+            let ar = [];
+            let cl_y = 0;
+            let cl_x = 0;
+            let k = 0;
+            let k_ = 0;
+            let x=0;
+            let y=0;
+            let LevelGame = 100;
+            let SoB = 4;
+            let Theme = 'light';
+            CreatPanel();
+            Random();
+
+            function CreatPanel() {
+                document.querySelector('.main').innerHTML = '';
+                k = 0;
+                k_ = 0;
+                for (let i=0; i<=SoB-1; i++) {
+                    document.querySelector('.main').innerHTML +=
+                        '<div id="lines_id" class="lines_'+(i+1)+'">';
+            
+                    for (let j=0; j<=SoB-1; j++) {
+                        k++;
+                        document.querySelector('.lines_'+(i+1)).innerHTML +=
+                            '<div class="columns_">'+
+                                '<button id="but" class="but_'+k+'" onclick="'+
+                                    'Clicked('+i+','+j+');'+
+                                    'Update();'+
+                                    '">'+
+                                    k+
+                                '</button>'+
+                            '</div>';
+                    }
+                    document.querySelector('.main').innerHTML +=
+                        '</div>';
+                }
+            }
+
+            function Random() {
+                k = 0;
+                for (let i=0; i<=SoB-1; i++) {
+                    ar.push([]);
+                    for (let j=0; j<=SoB-1; j++) {
+                        k++;
+                        ar[i].push(0);
+                    }
+                }
+                k = 0;
+                for (let i=0; i<=SoB-1; i++) {
+                    for (let j=0; j<=SoB-1; j++) {
+                        k++;
+                        console.log(k === SoB*SoB);
+                        if (k === SoB*SoB) {
+                            k = 0;
+                        }
+                        ar[i][j] = k;
+                    }
+                }
+
+                for (let i_=1; i_<=LevelGame; i_++) {
+                    for (let i=0; i<=SoB-1; i++) {
+                        for (let j=0; j<=SoB-1; j++) {
+                            if(ar[i][j] === 0) {
+                                k_ = Math.floor(Math.random()*4)+1;
+                                if (k_ <= 2) {
+                                    cl_x = j;
+                                    cl_y = i;
+                                    if (i === 0) {
+                                        cl_y++;
+                                    } else if (i === (SoB-1)) {
+                                        cl_y--;
+                                    } else if (1 <= i || i <= (SoB-2)) {
+                                        if (k_ === 1) {
+                                            cl_y--;
+                                        } else if (k_ === 2) {
+                                            cl_y++;
+                                        }
+                                    }
+                                } else if (k_ >= 3) {
+                                    cl_y = i;
+                                    cl_x = j;
+                                    if (j === 0) {
+                                        cl_x++;
+                                    } else if (j === (SoB-1)) {
+                                        cl_x--;
+                                    } else if (1 <= j || j <= (SoB-2)) {
+                                        if (k_ === 3) {
+                                            cl_x--;
+                                        } else if (k_ === 4) {
+                                            cl_x++;
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    }
+                console.log(cl_y,cl_x);
+                Clicked(cl_y,cl_x); 
+                }
+                console.log(ar);
+                Update();
+            }
+            function Clicked(cl_y,cl_x) {
+                if (cl_y < (SoB-1)) {
+                    if (ar[cl_y+1][cl_x] === 0) {
+                        ar[cl_y+1][cl_x] = ar[cl_y][cl_x];
+                        ar[cl_y][cl_x] = 0;
+                    } 
+                }
+                if (cl_x < (SoB-1)) {
+                    if (ar[cl_y][cl_x+1] === 0) {
+                        ar[cl_y][cl_x+1] = ar[cl_y][cl_x];
+                        ar[cl_y][cl_x] = 0;
+                    }
+                }
+                if (cl_y > 0) {
+                    if (ar[cl_y-1][cl_x] === 0) {
+                        ar[cl_y-1][cl_x] = ar[cl_y][cl_x];
+                        ar[cl_y][cl_x] = 0;
+                    }
+                }
+                if (cl_x > 0) {
+                    if (ar[cl_y][cl_x-1] === 0) {
+                        ar[cl_y][cl_x-1] = ar[cl_y][cl_x];
+                        ar[cl_y][cl_x] = 0;
+                    }
+                }
+            }
+            function Update() {
+                document.documentElement.setAttribute
+                    ('data-theme',Theme);
+                k = 0;
+                for (let i=0; i<=SoB-1; i++) {
+                    for (let j=0; j<=SoB-1; j++) {
+                        k++;
+                        document.querySelector('.but_'+k).innerHTML =
+                            ar[i][j];
+                        if (ar[i][j] === 0) {
+                            document.querySelector('.but_'+k).style.display = "none";
+                        } else {
+                            document.querySelector('.but_'+k).style.display = "block";
+                        }
+                    }
+                }
+                Cheking();
+            }
+            function Cheking() {
+                k = 0;
+                k_ = 0;
+                for (let i=0; i<=SoB-1; i++) {
+                    for (let j=0; j<=SoB-1; j++) {
+                        k++;
+                        if (k <= (SoB*SoB-1)) {
+                            if (ar[i][j] === k) {
+                                k_++;
+                            }
+                        } else if (k === (SoB*SoB)) {
+                            if (ar[i][j] === 0) {
+                                k_++;
+                            }
+                        }
+                    }
+                    if (k_ === SoB*SoB) {
+                        console.log('WIN');
+                        setTimeout( ()=> {
+                            alert('asd');
+                        },1000 );
+                        //document.querySelector('.main').style = "background-color:black;";
+                    } else {
+                        console.log('Not');
+                    }
+                }
+            }
+
+        </script>
+    </body>
+</html>
