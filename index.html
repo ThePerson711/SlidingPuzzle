@@ -1,27 +1,34 @@
 <html>
     <head>
+        <title>
+            Sliding Game
+        </title>
         <style>
-            [data-theme="light"] {
+            [data-theme="Light"] {
                 --body-bg-color: rgba(220, 220, 220, 0.75);
                 --body-text-color: rgba(0, 0, 0, 1);
-                --main-text-color: rgb(32, 248, 255);
-                --main-blocks-color: rgb(255, 100, 22);
+                --main-text-color: rgb(128, 29, 126);
+                --main-blocks-color: rgb(154, 197, 54);
                 --main-block-panel-color: rgb(255, 183, 157);
                 --main-blocks-border-color: gray;
                 --main-border-color: gray;
+                --anti-bg-color: rgba(0, 0, 0, 0.75);
+                --anti-text-color: rgb(211, 211, 211);
             }
-            [data-theme="dark"] {
-                --body-bg-color: rgba(0, 0, 0, 0.85);
+            [data-theme="Dark"] {
+                --body-bg-color: rgba(0, 0, 0, 0.75);
                 --body-text-color: rgb(211, 211, 211);
                 --main-text-color: rgb(141, 237, 240);
                 --main-blocks-color: rgba(81, 44, 25, 0.854);
                 --main-block-panel-color: rgb(107, 71, 58);
                 --main-blocks-border-color: gray;
                 --main-border-color: rgb(255, 250, 250);
+                --anti-bg-color: rgba(220, 220, 220, 0.75);
+                --anti-text-color: rgba(0, 0, 0, 1);
             }
             body {
-                display: grid;
-                justify-items: center;
+                display: flex;
+                flex-direction: column;
                 align-items: center;
                 background-color: var(--body-bg-color);
                 color: var(--body-text-color);
@@ -32,9 +39,7 @@
                 padding: 3px;
                 background-color: var(--main-block-panel-color);
                 aspect-ratio: 1/1;
-                width: 60%;
-                min-width: 300px;
-                max-width: 780px;
+                width: 75%;
                 margin: 0;
                 display: flex;
                 flex-direction: column;
@@ -62,14 +67,202 @@
                 font-weight: bold;
                 color: var(--main-text-color);
             }
+            .top_panel {
+                background-color: black;
+                aspect-ratio: 5/1;
+                width: 75%;
+                border: 2px solid var(--main-border-color);
+                border-radius: 12px;
+                padding: 3px;
+                background-color: var(--main-block-panel-color);
+                margin: 10px 0;
+                display: flex;
+                flex-direction: column;
+            }
+            .top_panel p {
+                margin: 0;
+            }
+            .tp_level_div {
+                height: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+            } 
+            .tp_level_div p {
+                font-size:calc(5px + 5vw);
+            }
+            .tp_score_div {
+                height: 50%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 0;
+            }
+            .tp_score_div p {
+                font-size:calc(5px + 4vw);
+            }
+            p {
+                margin: 0;
+                color: var(--body-text-color);
+                font-weight: bold;
+            }
+
+            .tp_setting_div {
+                aspect-ratio: 1.5/1;
+                width: 10%;
+                position: absolute;
+                align-self: self-end;
+                align-self: self-end;
+                margin: 0;
+            }
+            .tp_sd_btn {
+                width: 100%;
+                height: 100%;
+                border-radius: calc(10px + 10vw);
+                border: none;
+                background-color: var(--anti-bg-color);
+                color: var(--anti-text-color);
+                font-size:calc(5px + 2vw);
+                font-weight: bold;
+                transition: 0.15s;
+            }
+            .tp_sd_btn:active {
+                scale: 1.25;
+            }
+
+            .restart_panel {
+                margin-top: 10px;
+                aspect-ratio: 3/1;
+                width: 30%;
+                border: none;
+            }
+            .restart_but {
+                width: 100%;
+                height: 100%;
+                border-radius: 12px;
+                background-color: var(--main-block-panel-color);
+                font-size:calc(5px + 4vw);
+                font-weight: bold;
+                border: 4px solid var(--main-blocks-border-color);
+            }
+            .winnig_panel {
+                display: none;
+                position: absolute;
+                background-color: var(--body-bg-color);
+                width: 100%;
+                height: 100%;
+            }
+            .wp_div {
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: var(--body-bg-color);
+            }
+            .wp_div p {
+                justify-content: center;
+                justify-self: center;
+                justify-items: center;
+                margin: 0;
+                margin-bottom: 10px;
+            }
+            .you_win {
+                font-size:calc(5px + 10vw);
+            }
+            .yw_moves, 
+            .yw_time {
+                font-size:calc(5px + 5vw);
+            }
+            .new_game {
+                aspect-ratio: 2.5/1;
+                width: 50%;
+                border-radius: 20px;
+                font-size: 55px;
+                background-color: var(--body-bg-color);
+                font-size:calc(5px + 8vw);
+                font-weight: bold;
+                border: 4px solid var(--main-blocks-border-color);
+                color: var(--body-text-color)
+            }
+            #but {
+                transition: 0.15s;
+            }
+            #but:active {
+                scale: 1.2;
+            }
+            .my_panel {
+                margin: 20px 0 0 0;
+                aspect-ratio: 4/1;
+                width: 20%;
+            }
+            .my_panel_btn {
+                border: none;
+                width: 100%;
+                height: 100%;
+                background-color: var(--anti-bg-color);
+                color: var(--anti-text-color);
+                font-size:calc(5px + 2vw);
+                font-weight: bold;
+                border-radius: 5px;
+            }
         </style>
     </head>
     <body>
         <!--  -->
+        <div class="winnig_panel">
+            <div class="wp_div">
+                <p class="you_win">
+                    You Win!
+                </p>
+                <p class="yw_moves">
+                    Moves : 0
+                </p>
+                <p class="yw_time">
+                    Time 00 : 00 : 00
+                </p>
+                <button class="new_game" onclick="
+                    NewGame();
+                    ">
+                    New Game
+                </button>
+            </div> 
+        </div>
+        <!--  -->
+        <div class="top_panel">
+            <div class="tp_setting_div">
+                <button class="tp_sd_btn" onclick="
+                    Settings();
+                    ">
+                    Setting
+                </button>
+            </div>
+            <div class=tp_level_div>
+                <p class="level">Level</p>
+            </div>
+            <div class="tp_score_div">
+                <p class="playermoves">moves:</p>
+                <p class="time">00 : 00 : 00 : Time</p>
+            </div>
+        </div>
         <div class="main">
             </div>
+        <div class="restart_panel">
+            <button class="restart_but" onclick="
+                Restart();
+                ">
+                Restart
+            </button>
+        </div>
         <div class="my_panel">
-            </div>
+            <button class="my_panel_btn" onclick="
+                LinkToMyAccount();
+                ">
+                Craetor ###
+            </button>
+        </div>
         <!--  -->
         <script>
             let ar = [];
@@ -79,11 +272,34 @@
             let k_ = 0;
             let x=0;
             let y=0;
-            let LevelGame = 100;
-            let SoB = 4;
-            let Theme = 'light';
-            CreatPanel();
-            Random();
+            let LevelGame = 1;
+            let SoB = 5;
+            let Theme = 'Light';
+            /*light*/
+            let PlayerMoves = 0;
+            let time = 0;
+            let intervalID;
+            Restart();
+            //Wined();
+
+            function LinkToMyAccount() {
+                window.open("https://t.me/AkbarShoh_711");
+            }
+
+            function NewGame() {
+                document.querySelector('.winnig_panel').style.display = "none";
+                document.querySelector('.tp_setting_div').style.display = "block";
+                Restart();
+            }
+
+            function Restart() {
+                CreatPanel();
+                Random();
+                Start();
+                Update();
+                document.querySelector('.time').innerHTML = 
+                    '00 : 00 : 00 : Time &#160;';
+            }
 
             function CreatPanel() {
                 document.querySelector('.main').innerHTML = '';
@@ -131,7 +347,7 @@
                     }
                 }
 
-                for (let i_=1; i_<=LevelGame; i_++) {
+                for (let i_=1; i_<=(LevelGame*10+25); i_++) {
                     for (let i=0; i<=SoB-1; i++) {
                         for (let j=0; j<=SoB-1; j++) {
                             if(ar[i][j] === 0) {
@@ -172,37 +388,74 @@
                 Clicked(cl_y,cl_x); 
                 }
                 console.log(ar);
+                PlayerMoves=0;
                 Update();
             }
+
+            function Start() {
+                const TL = document.querySelector('.time');
+                time = 0;
+                intervalID = setInterval( () => {
+                    time++;
+                    TL.innerHTML = '';
+                    TL.innerHTML+=time;
+                    TL.innerHTML = '';
+                    if (Math.floor(time / 3600) < 10) {
+                        TL.innerHTML+='0';
+                    }
+                    TL.innerHTML+=Math.floor(time / 3600);
+                    TL.innerHTML+=' : ';
+                    if ((Math.floor(time / 60)%60) < 10) {
+                        TL.innerHTML+='0';
+                    }
+                    TL.innerHTML+=Math.floor(time / 60)%60;
+                    TL.innerHTML+=' : ';
+                    if (time%60 < 10) {
+                        TL.innerHTML+='0';
+                    }
+                    TL.innerHTML+=(time%60);
+                    TL.innerHTML+=' : Time &#160;';
+                },1000);
+            }
+
             function Clicked(cl_y,cl_x) {
                 if (cl_y < (SoB-1)) {
                     if (ar[cl_y+1][cl_x] === 0) {
                         ar[cl_y+1][cl_x] = ar[cl_y][cl_x];
                         ar[cl_y][cl_x] = 0;
+                        PlayerMoves++;
                     } 
                 }
                 if (cl_x < (SoB-1)) {
                     if (ar[cl_y][cl_x+1] === 0) {
                         ar[cl_y][cl_x+1] = ar[cl_y][cl_x];
                         ar[cl_y][cl_x] = 0;
+                        PlayerMoves++;
                     }
                 }
                 if (cl_y > 0) {
                     if (ar[cl_y-1][cl_x] === 0) {
                         ar[cl_y-1][cl_x] = ar[cl_y][cl_x];
                         ar[cl_y][cl_x] = 0;
+                        PlayerMoves++;
                     }
                 }
                 if (cl_x > 0) {
                     if (ar[cl_y][cl_x-1] === 0) {
                         ar[cl_y][cl_x-1] = ar[cl_y][cl_x];
                         ar[cl_y][cl_x] = 0;
+                        PlayerMoves++;
                     }
                 }
             }
             function Update() {
+                document.querySelector('.tp_sd_btn').innerHTML = Theme;
                 document.documentElement.setAttribute
                     ('data-theme',Theme);
+                document.querySelector('.level').innerHTML =
+                    'Level : '+LevelGame;
+                document.querySelector('.playermoves').innerHTML =
+                    '&#160; Moves : '+PlayerMoves;
                 k = 0;
                 for (let i=0; i<=SoB-1; i++) {
                     for (let j=0; j<=SoB-1; j++) {
@@ -237,15 +490,49 @@
                     if (k_ === SoB*SoB) {
                         console.log('WIN');
                         setTimeout( ()=> {
-                            alert('asd');
-                        },1000 );
-                        //document.querySelector('.main').style = "background-color:black;";
-                    } else {
-                        console.log('Not');
+                            Wined();
+                        },250 );
                     }
                 }
             }
+            function Wined() {
+                clearInterval(intervalID);
+                LevelGame++;
+                document.querySelector('.yw_moves').innerHTML =
+                    'Moves : ' + PlayerMoves;
+                    const TL = document.querySelector('.yw_time');
+                    TL.innerHTML = '';
+                    TL.innerHTML+=time;
+                    TL.innerHTML = '';
+                    if (Math.floor(time / 3600) < 10) {
+                        TL.innerHTML+='0';
+                    }
+                    TL.innerHTML+=Math.floor(time / 3600);
+                    TL.innerHTML+=' : ';
+                    if ((Math.floor(time / 60)%60) < 10) {
+                        TL.innerHTML+='0';
+                    }
+                    TL.innerHTML+=Math.floor(time / 60)%60;
+                    TL.innerHTML+=' : ';
+                    if (time%60 < 10) {
+                        TL.innerHTML+='0';
+                    }
+                    TL.innerHTML+=(time%60);
+                    TL.innerHTML+=' : Time &#160;';
 
+
+                    //
+                document.querySelector('.winnig_panel').style.display = "block";
+                document.querySelector('.tp_setting_div').style.display = "none";
+            }
+            function Settings() {
+                if (Theme === 'Light') {
+                    Theme = 'Dark';
+                } else {
+                    Theme = 'Light';
+                }
+                Update();
+            }
         </script>
     </body>
 </html>
