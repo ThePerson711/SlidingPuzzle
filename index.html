@@ -26,6 +26,28 @@
                 --anti-bg-color: rgba(220, 220, 220, 0.75);
                 --anti-text-color: rgba(0, 0, 0, 1);
             }
+            [data-size="2"] {
+                --main-blocks-text-size:  calc(0px + 26vw);
+            }
+            [data-size="3"] {
+                --main-blocks-text-size:  calc(0px + 18vw);
+            }
+            [data-size="4"] {
+                --main-blocks-text-size:  calc(0px + 12vw);
+            }
+            [data-size="5"] {
+                --main-blocks-text-size:  calc(0px + 10vw);
+            }
+            [data-size="6"] {
+                --main-blocks-text-size:  calc(0px + 7vw);
+            }
+            [data-size="7"] {
+                --main-blocks-text-size:  calc(0px + 5vw);
+            }
+            [data-size="8"] {
+                --main-blocks-text-size:  calc(0px + 4vw);
+            }
+
             body {
                 display: flex;
                 flex-direction: column;
@@ -189,7 +211,7 @@
             }
             #but {
                 transition: 0.15s;
-                font-size:calc(5px + 12vw);
+                font-size: var(--main-blocks-text-size);
                 font-weight: bold;
             }
             #but:active {
@@ -276,15 +298,90 @@
             let y=0;
             let LevelGame = 1;
             let SoB = 4;
-            let Theme = 'Light';
+            let Theme = 'Dark';
+            let Size_text = '4';
             let PlayerMoves = 0;
             let time = 0;
             let intervalID;
+            let x_ = 0;
+            let y_ = 0;
+
             Restart();
-            //Wined();
 
             function LinkToMyAccount() {
                 window.open("https://t.me/AkbarShoh_711" ,target="_blank");
+            }
+
+            document.addEventListener('keydown', (event) => {
+                console.log(event.key);
+                if (event.key === 'ScrollLock' ||
+                    event.key === 't'  || event.key === 'T') {
+                    if (Theme === 'Light') {
+                        Theme = 'Dark';
+                    } else {
+                        Theme = 'Light';
+                    }
+                }
+                for (let i=0; i<= SoB-1; i++) {
+                    for (let j=0; j<= SoB-1; j++) {
+                        if (ar[i][j] === 0) {
+                            x_ = j;
+                            y_ = i;
+                        }
+                    }
+                }
+                if (event.key === 'ArrowRight' ||
+                    event.key === 'd' || event.key === 'D') {
+                    x_++;
+                } else if (event.key === 'ArrowLeft' ||
+                    event.key === 'a' || event.key === 'A') {
+                    x_--;
+                } else if (event.key === 'ArrowUp' || 
+                    event.key === 'w' || event.key === 'W') {
+                    y_--;
+                } else if (event.key === 'ArrowDown' || 
+                    event.key === 's' || event.key === 'S') {
+                    y_++;
+                }         
+                if ( 0 <= x_ && x_ <= (SoB-1) ) {
+                    if ( 0 <= y_ && y_ <= (SoB-1) ) {
+                        Clicked(y_,x_);
+                        Update();
+                    } 
+                } 
+            });
+
+            function Command711(CommandOfCheat) {
+                if (CommandOfCheat === 'size-up') {
+                    if (SoB < 8) {
+                        SoB++;
+                        Restart();
+                    }
+                }
+                if (CommandOfCheat === 'size-down') {
+                    if (SoB > 2) {
+                        SoB--;
+                        Restart();
+                    }
+                }
+                if (CommandOfCheat === 'time-stop') {
+                    End();
+                }
+                if (typeof(CommandOfCheat) === 'number') {
+                    LevelGame = CommandOfCheat;
+                    Restart();
+                }
+                if (CommandOfCheat === 'auto-play') {
+                    console.log('F*ck!');
+                }
+                if (CommandOfCheat === 'light') {
+                    Theme = 'Light';
+                    Update();
+                }
+                if (CommandOfCheat === 'dark') {
+                    Theme = 'Dark';
+                    Update();
+                }
             }
 
             function NewGame() {
@@ -294,6 +391,7 @@
             }
 
             function Restart() {
+                End();
                 CreatPanel();
                 Random();
                 Start();
@@ -340,7 +438,6 @@
                 for (let i=0; i<=SoB-1; i++) {
                     for (let j=0; j<=SoB-1; j++) {
                         k++;
-                        console.log(k === SoB*SoB);
                         if (k === SoB*SoB) {
                             k = 0;
                         }
@@ -385,10 +482,8 @@
                             }
                         }
                     }
-                console.log(cl_y,cl_x);
                 Clicked(cl_y,cl_x); 
                 }
-                console.log(ar);
                 PlayerMoves=0;
                 Update();
             }
@@ -417,6 +512,9 @@
                     TL.innerHTML+=(time%60);
                     TL.innerHTML+=' : Time &#160;';
                 },1000);
+            }
+            function End() {
+                clearInterval(intervalID);
             }
 
             function Clicked(cl_y,cl_x) {
@@ -453,6 +551,9 @@
                 document.querySelector('.tp_sd_btn').innerHTML = Theme;
                 document.documentElement.setAttribute
                     ('data-theme',Theme);
+                Size_text = String(SoB);
+                document.documentElement.setAttribute
+                    ('data-size',Size_text); 
                 document.querySelector('.level').innerHTML =
                     'Level : '+LevelGame;
                 document.querySelector('.playermoves').innerHTML =
